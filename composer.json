@@ -1,0 +1,21 @@
+{
+    "name": "epuzzle/magento2-module-file-uploader",
+    "version": "1.0.0",
+    "description": "A module for file loading.",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*",
+        "epuzzle/magento2-module-base": "*"
+    },
+    "license": [
+        "Proprietary"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "EPuzzle\\FileUploader\\": ""
+        }
+    }
+}
