@@ -2,6 +2,18 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="EPuzzle\FileUploader\Api\Data\FileInterface" type="EPuzzle\FileUploader\Model\File"/>
+    <preference for="EPuzzle\FileUploader\Api\Data\FileSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
     <preference for="EPuzzle\FileUploader\Api\FileRepositoryInterface" type="EPuzzle\FileUploader\Model\FileRepository"/>
     <preference for="EPuzzle\FileUploader\Api\FileUploaderManagementInterface" type="EPuzzle\FileUploader\Model\FileUploaderManagement"/>
+
+    <preference for="EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolverInterface" type="EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolver"/>
+
+    <type name="EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolver">
+        <arguments>
+            <argument name="resolvers" xsi:type="array">
+                <item name="uploader" xsi:type="object">EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolver\Uploader</item>
+                <item name="external_link" xsi:type="object">EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolver\ExternalLink</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

@@ -8,6 +8,8 @@ use EPuzzle\FileUploader\Api\Data\FileInterface;
 use EPuzzle\FileUploader\Api\FileRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResults;
 
 /**
  * Provides CRUD functionality to the file entity
@@ -20,6 +22,7 @@ class FileRepository implements FileRepositoryInterface
      * @param FileRepository\Get $get
      * @param FileRepository\Save $save
      * @param FileRepository\Delete $delete
+     * @param FileRepository\GetList $getList
      * @param FileRepository\Create $create
      * @param SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
      */
@@ -27,6 +30,7 @@ class FileRepository implements FileRepositoryInterface
         private FileRepository\Get $get,
         private FileRepository\Save $save,
         private FileRepository\Delete $delete,
+        private FileRepository\GetList $getList,
         private FileRepository\Create $create,
         private SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory
     ) {
@@ -54,6 +58,14 @@ class FileRepository implements FileRepositoryInterface
     public function delete(FileInterface $file): void
     {
         $this->delete->execute($file);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria): SearchResults
+    {
+        return $this->getList->execute($searchCriteria);
     }
 
     /**

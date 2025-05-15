@@ -14,17 +14,12 @@ interface FileUploaderManagementInterface
     /**
      * Upload the list of files
      *
-     * @return \EPuzzle\FileUploader\Api\Data\FileInterface
+     * @return \EPuzzle\FileUploader\Api\Data\FileInterface[]
      * @throws \Magento\Framework\Exception\FileSystemException
+     * @throws \Magento\Framework\Exception\NotFoundException
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function upload(): Data\FileInterface;
-
-    /**
-     * Builds the uploader object
-     *
-     * @return \Magento\MediaStorage\Model\File\Uploader
-     */
-    public function buildUploader(): Uploader;
+    public function upload(): array;
 
     /**
      * Get the media directory path
