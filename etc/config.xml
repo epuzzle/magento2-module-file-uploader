@@ -6,6 +6,7 @@
             <settings>
                 <allowed_extensions>jpg,jpeg,pdf,doc,png,zip</allowed_extensions>
                 <media_directory>epuzzle_files</media_directory>
+                <var_directory>epuzzle_files</var_directory>
             </settings>
         </epuzzle_file_uploader>
     </default>

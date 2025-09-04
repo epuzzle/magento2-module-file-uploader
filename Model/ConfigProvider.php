@@ -49,4 +49,14 @@ class ConfigProvider
     {
         return (string)$this->scopeConfig->getValue('epuzzle_file_uploader/settings/media_directory');
     }
+
+    /**
+     * Get var directory name
+     *
+     * @return string
+     */
+    public function getVarDirectory(): string
+    {
+        return (string)$this->scopeConfig->getValue('epuzzle_file_uploader/settings/var_directory');
+    }
 }

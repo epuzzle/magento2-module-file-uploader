@@ -41,12 +41,22 @@ interface FileRepositoryInterface
     public function delete(Data\FileInterface $file): void;
 
     /**
+     * Delete the file by ID
+     *
+     * @param int $fileId
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\CouldNotDeleteException
+     */
+    public function deleteById(int $fileId): void;
+
+    /**
      * Get the list of files
      *
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Magento\Framework\Api\SearchResults
+     * @return \EPuzzle\FileUploader\Api\Data\FileSearchResultsInterface
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): SearchResults;
+    public function getList(SearchCriteriaInterface $searchCriteria): Data\FileSearchResultsInterface;
 
     /**
      * Create the file

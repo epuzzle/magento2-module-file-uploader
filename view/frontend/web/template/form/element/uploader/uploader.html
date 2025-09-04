@@ -1,8 +1,10 @@
 <div class="field-control" css="'_with-tooltip': $data.tooltip">
     <div class="file-uploader" data-role="drop-zone" css="_loading: isLoading">
         <div class="file-uploader-area">
-            <input type="file" afterRender="onElementRender" attr="id: uid, name: inputName, multiple: isMultipleFiles"
-                   disable="disabled"/>
+            <input type="file"
+                   afterRender="onElementRender"
+                   attr="id: uid, name: inputName, multiple: isMultipleFiles"
+                   disable="disabled">
             <label class="file-uploader-button action-default" attr="for: uid" translate="'Upload'"></label>
 
             <span class="file-uploader-spinner"></span>

@@ -3,10 +3,12 @@
     <table name="epuzzle_file_uploader_file" resource="default" engine="innodb" comment="The File Uploader File Table">
         <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
         <column xsi:type="varchar" name="identifier" nullable="true" length="40" comment="Identifier (SHA1)"/>
-        <column xsi:type="varchar" name="type" length="64" nullable="true" comment="Type"/>
         <column xsi:type="varchar" name="name" length="254" nullable="true" comment="Name"/>
         <column xsi:type="varchar" name="path" length="254" nullable="true" comment="Path"/>
-        <column xsi:type="varchar" name="media_url" length="254" nullable="true" comment="Media URL"/>
+        <column xsi:type="varchar" name="relative_path" length="254" nullable="true" comment="Relative Path"/>
+        <column xsi:type="int" name="size" unsigned="true" nullable="true" identity="false" comment="Size"/>
+        <column xsi:type="varchar" name="type" length="64" nullable="true" comment="Type"/>
+        <column xsi:type="varchar" name="extension" length="32" nullable="true" comment="Extension"/>
         <column xsi:type="timestamp" name="creation_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Creation Time"/>
         <column xsi:type="timestamp" name="update_time" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Modification Time"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">

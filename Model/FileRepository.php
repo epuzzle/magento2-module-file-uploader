@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace EPuzzle\FileUploader\Model;
 
 use EPuzzle\FileUploader\Api\Data\FileInterface;
+use EPuzzle\FileUploader\Api\Data\FileSearchResultsInterface;
 use EPuzzle\FileUploader\Api\FileRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResults;
 
 /**
  * Provides CRUD functionality to the file entity
@@ -63,7 +63,15 @@ class FileRepository implements FileRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function getList(SearchCriteriaInterface $searchCriteria): SearchResults
+    public function deleteById(int $fileId): void
+    {
+        $this->delete($this->get($fileId));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getList(SearchCriteriaInterface $searchCriteria): FileSearchResultsInterface
     {
         return $this->getList->execute($searchCriteria);
     }

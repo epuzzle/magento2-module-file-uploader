@@ -6,6 +6,7 @@ namespace EPuzzle\FileUploader\Model\FileRepository;
 
 use EPuzzle\FileUploader\Api\Data\FileInterface;
 use EPuzzle\FileUploader\Model\ResourceModel\File;
+use Exception;
 use Magento\Framework\Exception\CouldNotSaveException;
 
 /**
@@ -34,7 +35,7 @@ class Save
     {
         try {
             $this->resource->save($file);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             throw new CouldNotSaveException(__('Could not save the file entity'), $exception);
         }
 

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="EPuzzle_Base::base">
+                    <resource id="EPuzzle_FileUploader::base" title="File Uploader" translate="title" sortOrder="40">
+                        <resource id="EPuzzle_FileUploader::view_file" title="View Files" translate="title" sortOrder="10"/>
+                        <resource id="EPuzzle_FileUploader::save_file" title="Save Files" translate="title" sortOrder="20"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

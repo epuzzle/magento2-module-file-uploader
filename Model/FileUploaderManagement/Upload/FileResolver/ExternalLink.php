@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolver;
 
+use EPuzzle\FileUploader\Api\Data\FileUploaderSettingsInterface;
 use EPuzzle\FileUploader\Api\FileRepositoryInterface;
+use EPuzzle\FileUploader\Api\FileResolverInterface;
 use EPuzzle\FileUploader\Model\FileUploaderManagement\GetMediaDirectoryPath;
-use EPuzzle\FileUploader\Model\FileUploaderManagement\Upload\FileResolverInterface;
-use InvalidArgumentException;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\Filesystem\Io\File;
-use Magento\Framework\UrlInterface;
 
 /**
  * Used to resolve all external links files
  */
-readonly class ExternalLink implements FileResolverInterface
+class ExternalLink implements FileResolverInterface
 {
     /**
      * ExternalLink
@@ -25,21 +24,19 @@ readonly class ExternalLink implements FileResolverInterface
      * @param FileRepositoryInterface $fileRepository
      * @param GetMediaDirectoryPath $getMediaDirectoryPath
      * @param File $fileAdapter
-     * @param UrlInterface $url
      */
     public function __construct(
-        private RequestInterface $request,
-        private FileRepositoryInterface $fileRepository,
-        private GetMediaDirectoryPath $getMediaDirectoryPath,
-        private File $fileAdapter,
-        private UrlInterface $url,
+        private readonly RequestInterface $request,
+        private readonly FileRepositoryInterface $fileRepository,
+        private readonly GetMediaDirectoryPath $getMediaDirectoryPath,
+        private readonly File $fileAdapter,
     ) {
     }
 
     /**
      * @inheritDoc
      */
-    public function resolve(): array
+    public function resolve(FileUploaderSettingsInterface $settings): array
     {
         $externalLinks = $this->request->getParam('external_links') ?? [];
         if ($content = (string)$this->request->getContent()) {
@@ -67,34 +64,11 @@ readonly class ExternalLink implements FileResolverInterface
                 }
                 $file->setName($fileName);
                 $file->setPath($pathToPaste);
-                $file->setType(mime_content_type($filePath));
-                // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
-                $file->setSize(filesize($filePath));
-                $file->setPath($pathToPaste);
-                $file->setMediaUrl($this->getMediaUrlFromPath($filePath));
                 $this->fileRepository->save($file);
                 $files[] = $file;
             }
         }
 
         return $files;
-    }
-
-    /**
-     * Get media URL form the path
-     *
-     * @param string $absolutePath
-     * @return string
-     */
-    private function getMediaUrlFromPath(string $absolutePath): string
-    {
-        // Look for /pub/media or /media in the path
-        if (preg_match('#/(pub/)?media/(.+)$#', str_replace('\\', '/', $absolutePath), $matches)) {
-            $relativePath = $matches[2];
-
-            return $this->url->getBaseUrl(['_type' => UrlInterface::URL_TYPE_MEDIA])
-                . ltrim($relativePath, '/');
-        }
-        throw new InvalidArgumentException("Provided path is not inside media directory.");
     }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace EPuzzle\FileUploader\Model\FileRepository;
 
+use EPuzzle\FileUploader\Api\Data\FileSearchResultsInterface;
 use EPuzzle\FileUploader\Api\Data\FileSearchResultsInterfaceFactory;
 use EPuzzle\FileUploader\Model\ResourceModel\File\CollectionFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchResults;
 
 /**
  * Used to get the list of files
@@ -33,9 +33,9 @@ class GetList
      * Get the list of files
      *
      * @param SearchCriteriaInterface $searchCriteria
-     * @return SearchResults
+     * @return FileSearchResultsInterface
      */
-    public function execute(SearchCriteriaInterface $searchCriteria): SearchResults
+    public function execute(SearchCriteriaInterface $searchCriteria): FileSearchResultsInterface
     {
         $collection = $this->collectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);

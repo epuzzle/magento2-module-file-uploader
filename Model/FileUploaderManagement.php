@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace EPuzzle\FileUploader\Model;
 
+use EPuzzle\FileUploader\Api\Data;
+use EPuzzle\FileUploader\Api\Data\FileUploaderSettingsInterface;
+use EPuzzle\FileUploader\Api\Data\FileUploaderSettingsInterfaceFactory;
+use EPuzzle\FileUploader\Api\FileResolverInterface;
 use EPuzzle\FileUploader\Api\FileUploaderManagementInterface;
 
 /**
@@ -15,21 +19,25 @@ class FileUploaderManagement implements FileUploaderManagementInterface
      * FileUploaderManagement
      *
      * @param FileUploaderManagement\GetMediaDirectoryPath $getMediaDirectoryPath
-     * @param FileUploaderManagement\Upload\FileResolverInterface $fileResolver
+     * @param FileResolverInterface $fileResolver
+     * @param FileUploaderSettingsInterfaceFactory $fileUploaderSettingsFactory
      * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function __construct(
         private FileUploaderManagement\GetMediaDirectoryPath $getMediaDirectoryPath,
-        private FileUploaderManagement\Upload\FileResolverInterface $fileResolver
+        private FileResolverInterface $fileResolver,
+        private FileUploaderSettingsInterfaceFactory $fileUploaderSettingsFactory
     ) {
     }
 
     /**
      * @inheritDoc
      */
-    public function upload(): array
+    public function upload(?FileUploaderSettingsInterface $settings = null): array
     {
-        return $this->fileResolver->resolve();
+        $settings = $settings ?: $this->createFileUploaderSettings();
+
+        return $this->fileResolver->resolve($settings);
     }
 
     /**
@@ -38,5 +46,13 @@ class FileUploaderManagement implements FileUploaderManagementInterface
     public function getMediaDirectoryPath(): string
     {
         return $this->getMediaDirectoryPath->execute();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createFileUploaderSettings(): Data\FileUploaderSettingsInterface
+    {
+        return $this->fileUploaderSettingsFactory->create();
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="EPuzzle\FileUploader\Api\Data\FileUploaderSettingsInterface">
+        <attribute code="path_to_paste" type="string"/>
+        <attribute code="system_file_path" type="string"/>
+        <attribute code="uploader_allowed_extensions" type="array"/>
+        <attribute code="uploader_allow_create_folders" type="boolean"/>
+        <attribute code="uploader_allow_rename_files" type="boolean"/>
+        <attribute code="uploader_filenames_case_sensitivity" type="boolean"/>
+        <attribute code="uploader_files_dispersion" type="boolean"/>
+    </extension_attributes>
+</config>

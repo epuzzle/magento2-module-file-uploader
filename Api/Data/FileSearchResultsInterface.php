@@ -16,7 +16,7 @@ interface FileSearchResultsInterface extends SearchResultsInterface
      *
      * @return \EPuzzle\FileUploader\Api\Data\FileInterface[]
      */
-    public function getItems(): array;
+    public function getItems();
 
     /**
      * Set the list of files
