@@ -1,5 +1,5 @@
 # Welcome
-Welcome to the File Uploader installation! This module provides functionality to upload files to the Magento 2 server.
+Welcome to the File Uploader installation! This module provides functionality to upload files to the Adobe Commerce / Magento 2.
 
 # Requirements
 1. [Installed Magento 2 System](https://devdocs.magento.com/guides/v2.4/install-gde/bk-install-guide.html)
