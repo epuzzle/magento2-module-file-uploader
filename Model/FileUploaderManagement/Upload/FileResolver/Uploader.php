@@ -80,7 +80,6 @@ class Uploader implements FileResolverInterface
     public function buildUploader(FileUploaderSettingsInterface $settings): FileUploader
     {
         // builds the uploader object
-        /** @var FileUploader $uploader */
         // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageError
         $fieldId = $_POST['param_name'] ?? 'files[0]';
         $fieldId = $fieldId === 'undefined' ? 'files[0]' : $fieldId;

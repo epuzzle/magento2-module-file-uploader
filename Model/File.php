@@ -14,6 +14,7 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
+use Magento\Store\Model\Store;
 
 /**
  * The file entity model
@@ -258,9 +259,10 @@ class File extends AbstractModel implements FileInterface
             $mediaDirectory = $this->context->getDirectoryList()->getPath(DirectoryList::MEDIA);
             $mediaDirectory = rtrim($mediaDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $relativeMediaPath = str_replace($mediaDirectory, '', $this->getFullPath());
+            /** @var Store $store */
+            $store = $this->context->getStoreManager()->getStore();
 
-            return $this->context->getStoreManager()->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA)
-                . $relativeMediaPath;
+            return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $relativeMediaPath;
         } catch (Exception) {
             return null;
         }

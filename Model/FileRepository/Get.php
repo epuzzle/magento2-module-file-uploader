@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace EPuzzle\FileUploader\Model\FileRepository;
 
 use EPuzzle\FileUploader\Api\Data\FileInterface;
-use EPuzzle\FileUploader\Model\ResourceModel\File;
+use EPuzzle\FileUploader\Model\File;
+use EPuzzle\FileUploader\Model\ResourceModel\File as Resource;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -16,11 +17,11 @@ class Get
     /**
      * Get
      *
-     * @param File $resource
+     * @param Resource $resource
      * @param Create $create
      */
     public function __construct(
-        private readonly File $resource,
+        private readonly Resource $resource,
         private readonly Create $create
     ) {
     }
@@ -34,6 +35,7 @@ class Get
      */
     public function execute(int $fileId): FileInterface
     {
+        /** @var File $file */
         $file = $this->create->execute();
         $this->resource->load($file, $fileId);
         if (!$file->getEntityId()) {

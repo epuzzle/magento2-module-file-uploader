@@ -40,8 +40,8 @@ class GetList
         $collection = $this->collectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
         $searchResults = $this->searchResultsFactory->create();
-        $searchResults->setSearchCriteria($searchCriteria);
-        $searchResults->setItems(array_values($collection->getItems()));
+        $searchResults->setSearchCriteria($searchCriteria); // @phpstan-ignore-line
+        $searchResults->setItems(array_values($collection->getItems())); // @phpstan-ignore-line
         $searchResults->setTotalCount($collection->getSize());
 
         return $searchResults;

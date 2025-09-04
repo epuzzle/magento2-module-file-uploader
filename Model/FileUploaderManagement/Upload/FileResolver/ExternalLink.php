@@ -39,7 +39,8 @@ class ExternalLink implements FileResolverInterface
     public function resolve(FileUploaderSettingsInterface $settings): array
     {
         $externalLinks = $this->request->getParam('external_links') ?? [];
-        if ($content = (string)$this->request->getContent()) {
+        if (method_exists($this->request, 'getContent')
+            && ($content = (string)$this->request->getContent())) {
             $content = json_decode($content, true);
             $externalLinks = array_merge($externalLinks, $content['external_links'] ?? []);
         }

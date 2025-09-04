@@ -11,6 +11,7 @@ use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use Magento\Framework\Model\ActionValidator\RemoveAction;
+use Magento\Store\Model\StoreManager;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -75,7 +76,7 @@ class Context extends \Magento\Framework\Model\Context
     /**
      * Gets the store manager
      *
-     * @return StoreManagerInterface
+     * @return StoreManagerInterface|StoreManager
      */
     public function getStoreManager(): StoreManagerInterface
     {

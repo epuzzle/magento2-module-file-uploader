@@ -18,7 +18,7 @@ class FileUploaderSettings extends AbstractExtensibleModel implements FileUpload
      */
     public function getExtensionAttributes(): FileUploaderSettingsExtensionInterface
     {
-        return $this->_getExtensionAttributes();
+        return $this->_getExtensionAttributes(); // @phpstan-ignore-line
     }
 
     /**
