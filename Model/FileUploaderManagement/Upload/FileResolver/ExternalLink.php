@@ -45,10 +45,11 @@ class ExternalLink implements FileResolverInterface
         }
         $files = [];
         if (!empty($externalLinks)) {
-            $pathToPaste = $this->getMediaDirectoryPath->execute()
-                . DIRECTORY_SEPARATOR
-                . 'external_links'
-                . DIRECTORY_SEPARATOR;
+            $pathToPaste = $settings->getExtensionAttributes()->getPathToPaste();
+            if (!$pathToPaste) {
+                $pathToPaste = $this->getMediaDirectoryPath->execute();
+                $pathToPaste .= DIRECTORY_SEPARATOR . 'external_links' . DIRECTORY_SEPARATOR;
+            }
             $this->fileAdapter->mkdir($pathToPaste);
             foreach ($externalLinks as $externalLink) {
                 $file = $this->fileRepository->create();

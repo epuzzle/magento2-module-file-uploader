@@ -46,8 +46,11 @@ class SystemFile implements FileResolverInterface
         $fileName = $this->fileAdapter->getPathInfo($filePath)['basename'];
         // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         $fileSize = filesize($filePath);
-        $pathToPaste = $this->getVarDirectoryPath->execute();
-        $pathToPaste .= DIRECTORY_SEPARATOR . 'system_files' . DIRECTORY_SEPARATOR;
+        $pathToPaste = $settings->getExtensionAttributes()->getPathToPaste();
+        if (!$pathToPaste) {
+            $pathToPaste = $this->getVarDirectoryPath->execute();
+            $pathToPaste .= DIRECTORY_SEPARATOR . 'system_files' . DIRECTORY_SEPARATOR;
+        }
         $this->fileAdapter->mkdir($pathToPaste);
         // The MD5 here is not for crypto cases
         // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
