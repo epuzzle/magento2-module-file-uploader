@@ -9,7 +9,7 @@
         "epuzzle/magento2-module-base": "^1.0"
     },
     "license": [
-        "Proprietary"
+        "MIT"
     ],
     "autoload": {
         "files": [
