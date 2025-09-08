@@ -24,4 +24,4 @@ Welcome to the File Uploader installation! This module provides functionality to
 # License
 Copyright (c) 2025 ePuzzle contributors.
 The customer price module is [MIT licensed](./LICENSE).
-Project coordinator: &lt;dkaplinwdevs@gmail.com&gt;
+Project coordinator: &lt;support@epuzzle.org&gt;
