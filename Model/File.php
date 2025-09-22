@@ -261,8 +261,12 @@ class File extends AbstractModel implements FileInterface
             $relativeMediaPath = str_replace($mediaDirectory, '', $this->getFullPath());
             /** @var Store $store */
             $store = $this->context->getStoreManager()->getStore();
+            $fileUrl = $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $relativeMediaPath;
+            if ($this->context->getIoFile()->fileExists($fileUrl)) {
+                return $fileUrl;
+            }
 
-            return $store->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $relativeMediaPath;
+            return null;
         } catch (Exception) {
             return null;
         }

@@ -51,9 +51,16 @@ class FileUploaderSettingsTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['_getExtensionAttributes', '_setExtensionAttributes'])
             ->getMock();
+        $idx = 0;
+        $expected = [$first, $second];
         $sut->expects($this->exactly(2))
             ->method('_setExtensionAttributes')
-            ->withConsecutive([$first], [$second]);
+            ->willReturnCallback(function ($arg) use (&$idx, $expected) {
+                TestCase::assertSame($expected[$idx], $arg);
+                $idx++;
+
+                return null;
+            });
         $sut->expects($this->exactly(2))
             ->method('_getExtensionAttributes')
             ->willReturnOnConsecutiveCalls($first, $second);

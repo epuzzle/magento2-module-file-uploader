@@ -80,7 +80,7 @@ class ConfigProviderTest extends TestCase
         $path = 'epuzzle_file_uploader/settings/media_directory';
         $this->scopeConfig->expects($this->exactly(3))
             ->method('getValue')
-            ->withConsecutive([$path], [$path], [$path])
+            ->with($path)
             ->willReturnOnConsecutiveCalls('media', null, 123);
         self::assertSame('media', $this->sut->getMediaDirectory());
         self::assertSame('', $this->sut->getMediaDirectory());
@@ -92,7 +92,7 @@ class ConfigProviderTest extends TestCase
         $path = 'epuzzle_file_uploader/settings/var_directory';
         $this->scopeConfig->expects($this->exactly(3))
             ->method('getValue')
-            ->withConsecutive([$path], [$path], [$path])
+            ->with($path)
             ->willReturnOnConsecutiveCalls('var', null, 456);
         self::assertSame('var', $this->sut->getVarDirectory());
         self::assertSame('', $this->sut->getVarDirectory());

@@ -79,7 +79,10 @@ class ExternalLinkTest extends TestCase
 
     public function testResolveDownloadsAndSavesWithProvidedPath(): void
     {
-        $links = ['https://example.com/a/test1.csv', 'https://example.com/b/test2.csv'];
+        $links = [
+            'https://epuzzle.org/a/test1.csv',
+            'https://epuzzle.org/b/test2.csv',
+        ];
         $pathToPaste = '/var/media/custom/';
         $this->request->method('getParam')->with('external_links')->willReturn($links);
         $this->request->method('getContent')->willReturn('');
@@ -87,12 +90,18 @@ class ExternalLinkTest extends TestCase
         $this->io->expects($this->once())->method('mkdir')->with($pathToPaste);
         $this->io->method('getPathInfo')->willReturnCallback(
             function (string $url): array {
-                return ['basename' => basename(parse_url($url, PHP_URL_PATH) ?? '')];
+                $path = parse_url($url, PHP_URL_PATH) ?? '';
+
+                return ['basename' => basename($path)];
             }
         );
         $this->io->expects($this->exactly(2))
             ->method('fileExists')
-            ->with($this->callback(fn ($p) => str_starts_with($p, $pathToPaste)))
+            ->with($this->callback(
+                function ($p) use ($pathToPaste): bool {
+                    return str_starts_with((string)$p, $pathToPaste);
+                }
+            ))
             ->willReturn(false);
         $this->io->expects($this->exactly(2))->method('read')->willReturn(true);
         $file1 = $this->createMock(FileInterface::class);
@@ -101,45 +110,67 @@ class ExternalLinkTest extends TestCase
             ->method('create')
             ->willReturnOnConsecutiveCalls($file1, $file2);
         foreach ([$file1, $file2] as $file) {
-            $file->expects($this->once())->method('setName')->with($this->isType('string'))
+            $file->expects($this->once())
+                ->method('setName')
+                ->with($this->isType('string'))
                 ->willReturnSelf();
-            $file->expects($this->once())->method('setPath')->with($pathToPaste)
+            $file->expects($this->once())
+                ->method('setPath')
+                ->with($pathToPaste)
                 ->willReturnSelf();
         }
+        $saveIndex = 0;
+        $expected = [$file1, $file2];
         $this->fileRepository->expects($this->exactly(2))
             ->method('save')
-            ->withConsecutive([$file1], [$file2]);
+            ->willReturnCallback(
+                function ($arg) use (&$saveIndex, $expected): int {
+                    TestCase::assertSame($expected[$saveIndex], $arg);
+                    $saveIndex++;
+
+                    return $saveIndex;
+                }
+            );
         $result = $this->sut->resolve($this->settings);
         self::assertSame([$file1, $file2], $result);
     }
 
     public function testResolveUsesMediaDirWhenNoPathProvided(): void
     {
-        $links = ['https://host.tld/f.csv'];
+        $links = ['https://epuzzle.org/f.csv'];
         $mediaBase = '/var/www/pub/media';
         $expectedPath = $mediaBase . DIRECTORY_SEPARATOR . 'external_links' . DIRECTORY_SEPARATOR;
         $this->request->method('getParam')->with('external_links')->willReturn($links);
         $this->request->method('getContent')->willReturn('');
         $this->settingsExt->method('getPathToPaste')->willReturn(null);
-        $this->getMediaDirectoryPath->expects($this->once())->method('execute')->willReturn($mediaBase);
+        $this->getMediaDirectoryPath->expects($this->once())
+            ->method('execute')
+            ->willReturn($mediaBase);
         $this->io->expects($this->once())->method('mkdir')->with($expectedPath);
         $this->io->method('getPathInfo')->willReturn(['basename' => 'f.csv']);
         $this->io->method('fileExists')->willReturn(false);
         $this->io->method('read')->willReturn(true);
         $file = $this->createMock(FileInterface::class);
         $this->fileRepository->method('create')->willReturn($file);
-        $file->expects($this->once())->method('setName')->with($this->isType('string'))
+        $file->expects($this->once())
+            ->method('setName')
+            ->with($this->isType('string'))
             ->willReturnSelf();
-        $file->expects($this->once())->method('setPath')->with($expectedPath)
+        $file->expects($this->once())
+            ->method('setPath')
+            ->with($expectedPath)
             ->willReturnSelf();
-        $this->fileRepository->expects($this->once())->method('save')->with($file);
+        $this->fileRepository->expects($this->once())
+            ->method('save')
+            ->with($file)
+            ->willReturn(1);
         $result = $this->sut->resolve($this->settings);
         self::assertSame([$file], $result);
     }
 
     public function testResolveSkipsDownloadIfFileExists(): void
     {
-        $links = ['https://cdn/x.csv'];
+        $links = ['https://epuzzle.org/cdn/x.csv'];
         $this->request->method('getParam')->with('external_links')->willReturn($links);
         $this->request->method('getContent')->willReturn('');
         $this->settingsExt->method('getPathToPaste')->willReturn('/p/');
@@ -149,22 +180,30 @@ class ExternalLinkTest extends TestCase
         $this->io->expects($this->never())->method('read');
         $file = $this->createMock(FileInterface::class);
         $this->fileRepository->method('create')->willReturn($file);
-        $file->expects($this->once())->method('setName')->with($this->isType('string'))
+        $file->expects($this->once())
+            ->method('setName')
+            ->with($this->isType('string'))
             ->willReturnSelf();
-        $file->expects($this->once())->method('setPath')->with('/p/')
+        $file->expects($this->once())
+            ->method('setPath')
+            ->with('/p/')
             ->willReturnSelf();
-        $this->fileRepository->expects($this->once())->method('save')->with($file);
+        $this->fileRepository->expects($this->once())
+            ->method('save')
+            ->with($file)
+            ->willReturn(1);
         $result = $this->sut->resolve($this->settings);
         self::assertSame([$file], $result);
     }
 
     public function testResolveMergesLinksFromBodyJson(): void
     {
-        $paramLinks = ['https://a/t1.csv'];
-        $bodyLinks = ['https://b/t2.csv'];
+        $paramLinks = ['https://epuzzle.org/a/t1.csv'];
+        $bodyLinks = ['https://epuzzle.org/b/t2.csv'];
         $this->request->method('getParam')->with('external_links')->willReturn($paramLinks);
-        $this->request->method('getContent')
-            ->willReturn(json_encode(['external_links' => $bodyLinks], JSON_THROW_ON_ERROR));
+        $this->request->method('getContent')->willReturn(
+            json_encode(['external_links' => $bodyLinks], JSON_THROW_ON_ERROR)
+        );
         $this->settingsExt->method('getPathToPaste')->willReturn('/paste/');
         $this->io->expects($this->once())->method('mkdir')->with('/paste/');
         $this->io->method('getPathInfo')->willReturn(['basename' => 'x.csv']);
@@ -177,14 +216,16 @@ class ExternalLinkTest extends TestCase
         $file1->method('setPath')->willReturnSelf();
         $file2->method('setName')->willReturnSelf();
         $file2->method('setPath')->willReturnSelf();
-        $this->fileRepository->expects($this->exactly(2))->method('save');
+        $this->fileRepository->expects($this->exactly(2))
+            ->method('save')
+            ->willReturnOnConsecutiveCalls(1, 2);
         $result = $this->sut->resolve($this->settings);
         self::assertSame([$file1, $file2], $result);
     }
 
     public function testResolveThrowsWhenReadFails(): void
     {
-        $links = ['https://host/f.csv'];
+        $links = ['https://epuzzle.org/f.csv'];
         $this->request->method('getParam')->with('external_links')->willReturn($links);
         $this->request->method('getContent')->willReturn('');
         $this->settingsExt->method('getPathToPaste')->willReturn('/p/');

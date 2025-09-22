@@ -166,6 +166,7 @@ class FileTest extends TestCase
         $this->directoryList->method('getRoot')->willReturn('/app');
         $this->fileDriver->method('getRealPath')
             ->willReturn('/app/pub/media/catalog/f.jpg');
+        $this->ioFile->method('fileExists')->willReturn(true);
         $this->directoryList->expects($this->once())
             ->method('getPath')
             ->with(DirectoryList::MEDIA)
