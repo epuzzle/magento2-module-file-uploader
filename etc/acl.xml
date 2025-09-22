@@ -7,6 +7,7 @@
                     <resource id="EPuzzle_FileUploader::base" title="File Uploader" translate="title" sortOrder="40">
                         <resource id="EPuzzle_FileUploader::view_file" title="View Files" translate="title" sortOrder="10"/>
                         <resource id="EPuzzle_FileUploader::save_file" title="Save Files" translate="title" sortOrder="20"/>
+                        <resource id="EPuzzle_FileUploader::upload_file" title="Upload Files" translate="title" sortOrder="30"/>
                     </resource>
                 </resource>
             </resource>

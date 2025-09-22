@@ -256,7 +256,7 @@ class File extends AbstractModel implements FileInterface
     public function getMediaUrl(): ?string
     {
         try {
-            $mediaDirectory = $this->context->getDirectoryList()->getPath(DirectoryList::MEDIA);
+            $mediaDirectory = (string)$this->context->getDirectoryList()->getPath(DirectoryList::MEDIA);
             $mediaDirectory = rtrim($mediaDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
             $relativeMediaPath = str_replace($mediaDirectory, '', $this->getFullPath());
             /** @var Store $store */

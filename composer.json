@@ -1,6 +1,6 @@
 {
     "name": "epuzzle/magento2-module-file-uploader",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "This module provides file upload functionality.",
     "type": "magento2-module",
     "require": {

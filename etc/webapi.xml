@@ -4,7 +4,7 @@
     <route url="/V1/epuzzle-file-uploader/upload" method="POST">
         <service class="EPuzzle\FileUploader\Api\FileUploaderManagementInterface" method="upload"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="EPuzzle_FileUploader::upload_file"/>
         </resources>
     </route>
     <route url="/V1/epuzzle-file-uploader/:fileId" method="GET">

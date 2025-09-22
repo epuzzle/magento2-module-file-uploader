@@ -9,6 +9,7 @@ use EPuzzle\FileUploader\Api\FileRepositoryInterface;
 use EPuzzle\FileUploader\Api\FileResolverInterface;
 use EPuzzle\FileUploader\Model\FileUploaderManagement\GetVarDirectoryPath;
 use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Filesystem\Driver\File as FileDriver;
 use Magento\Framework\Filesystem\Io\File;
 
 /**
@@ -22,11 +23,13 @@ class SystemFile implements FileResolverInterface
      * @param FileRepositoryInterface $fileRepository
      * @param GetVarDirectoryPath $getVarDirectoryPath
      * @param File $fileAdapter
+     * @param FileDriver $fileDriver
      */
     public function __construct(
         private readonly FileRepositoryInterface $fileRepository,
         private readonly GetVarDirectoryPath $getVarDirectoryPath,
-        private readonly File $fileAdapter
+        private readonly File $fileAdapter,
+        private readonly FileDriver $fileDriver,
     ) {
     }
 
@@ -44,8 +47,7 @@ class SystemFile implements FileResolverInterface
             throw new FileSystemException(__('File not found.'));
         }
         $fileName = $this->fileAdapter->getPathInfo($filePath)['basename'];
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
-        $fileSize = filesize($filePath);
+        $fileSize = $this->fileDriver->stat($filePath)['size'];
         $pathToPaste = $settings->getExtensionAttributes()->getPathToPaste();
         if (!$pathToPaste) {
             $pathToPaste = $this->getVarDirectoryPath->execute();

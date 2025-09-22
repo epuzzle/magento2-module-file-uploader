@@ -28,7 +28,7 @@ class ConfigProvider
      * @param int|null $websiteId
      * @return array
      */
-    public function getAllowedExtensions(int $websiteId = null): array
+    public function getAllowedExtensions(?int $websiteId = null): array
     {
         $value = (string)$this->scopeConfig->getValue(
             'epuzzle_file_uploader/settings/allowed_extensions',
@@ -37,7 +37,7 @@ class ConfigProvider
         );
         $value = explode(',', $value);
 
-        return array_filter($value, static fn(string $sku) => !empty($sku));
+        return array_filter($value, static fn (string $value) => !empty(trim($value)));
     }
 
     /**
